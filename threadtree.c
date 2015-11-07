@@ -1,5 +1,6 @@
 #include <stdio.h>
-#define MAX 100
+#include <stdlib.h>
+#define MAX 1000
 
 struct node{
     int data;
@@ -30,16 +31,23 @@ struct node *newnode(int data, struct node *left, struct node *right) {
     return n;
 }
 
-struct node *aux(int a[], size_t len, size_t pos) {
-    struct node *n;
-    if (pos > len)
+//TODO: ALWAYS maintain the left pointer
+struct node *insert(struct node *n, int data) {
+    if (n == NULL) {
+        return newnode(data, NULL, NULL);
+    } else if (data < n->data) {
+        if (n->left)
+            return insert(n->left, data);
+        else
+            return n->left = newnode(data, NULL, NULL);
+    } else if (data > n->data) {
+        if (n->right)
+            return insert(n->right, data);
+        else
+            return n->right = newnode(data, NULL, NULL);
+    } else {
         return NULL;
-    n = newnode(a[pos], aux(a, len, pos * 2), aux(a, len, pos * 2 + 1));
-    return n;
-}
-
-struct node *build(int a[], size_t len) {
-    return aux(a, len, 1);
+    }
 }
 
 struct node *setthread(struct node *n) {
@@ -57,13 +65,16 @@ struct node *setthread(struct node *n) {
 }
 
 int main(int argc, char **argv) {
-    int tmp[MAX];
-    struct node *root, *n;
-    int index;
+    int data, flag = 1;
+    struct node *root = NULL, *n;
 
-    for (index = 1; index < MAX; index++)
-        scanf("%d", tmp + index);
-    root = build(tmp, MAX - 1);
+    while (scanf("%d", &data) == 1)
+        if (flag) {
+            root = insert(root, data);
+            flag = 0;
+        } else {
+            insert(root, data);
+        }
 
     setthread(root)->left == NULL;
     printf("PREORDER\n");
