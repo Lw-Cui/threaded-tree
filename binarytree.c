@@ -1,6 +1,6 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
-#define MAX 100
 
 struct node{
     int data;
@@ -44,6 +44,16 @@ void preoder(struct node *n) {
     }
 }
 
+void postoder(struct node *n) {
+    if (n == NULL) {
+        return;
+    } else {
+        postoder(n->left);
+        postoder(n->right);
+        printf("%d ", n->data);
+    }
+}
+
 int main(int argc, char **argv) {
     int data, flag = 1;
     struct node *root = NULL, *n;
@@ -56,9 +66,15 @@ int main(int argc, char **argv) {
     		insert(root, data);
     	}
 
-    printf("PREORDER\n");
-    preoder(root);
-    printf("\nEND PRERDER\n");
+    if (!strcmp(argv[1], "pre")) {
+        printf("PREORDER\n");
+        preoder(root);
+        printf("\nEND PRERDER\n");
+    } else if (!strcmp(argv[1], "post")) {
+        printf("POSTORDER\n");
+        postoder(root);
+        printf("\nEND POSTORDER\n");
+    }
 
     return 0;
 }
