@@ -1,5 +1,5 @@
 #!/bin/bash
 ./random.out > random.output
-./threadtree.out < random.output > threadtree.output
+./pre-threadtree.out < random.output > pre-threadtree.output
 ./binarytree.out < random.output > binarytree.output
-diff threadtree.output binarytree.output && echo 'Yeah'
+diff pre-threadtree.output binarytree.output && echo 'Pre-order: Yeah'

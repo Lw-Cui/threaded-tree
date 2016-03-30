@@ -1,23 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX 1000
 
 struct node{
     int data;
     struct node *left, *right;
     int leftnull;
 };
-
-struct pair{
-    struct node *last, *first;
-};
-
-struct pair *newpair(struct node *first, struct node *last) {
-    struct pair *p = (struct pair *)malloc(sizeof(struct pair));
-    p->last = last;
-    p->first = first;
-    return p;
-}
 
 struct node *newnode(int data, struct node *left) {
     struct node *n = (struct node *)malloc(sizeof(struct node));
@@ -52,6 +40,12 @@ void insert(struct node *n, int data) {
 		}
 }
 
+void clear(struct node *p) {
+    if (!p->leftnull) clear(p->left);
+    if (p->right) clear(p->right);
+    free(p);
+}
+
 int main(int argc, char **argv) {
     int data, flag = 1;
     struct node *root = NULL;
@@ -69,6 +63,7 @@ int main(int argc, char **argv) {
     for (n = root; n != NULL; n = n->left)
         printf("%d ", n->data);
     printf("\nEND PRERDER\n");
+    clear(root);
 
     return 0;
 }
